@@ -4,6 +4,9 @@ format: html
 editor: visual
 metadata:
   css: "styles.css"
+output:
+  html_document:
+    code_folding: hide
 ---
 
 ------------------------------------------------------------------------
@@ -37,7 +40,7 @@ Hablar del mundo de la programación es adentrarse en un universo inmenso, lleno
 
 ## Planificación
 
-```{r warning=FALSE}
+```{r warning=FALSE, echo=FALSE}
 
 library(DiagrammeR)
 
@@ -47,12 +50,12 @@ dateFormat  YYYY-MM-DD
 title A Very Nice Gantt Diagram
 
 section Main things
-Preparar PG01:active,first_1,2023-04-15,3d
+Preparar PG01:first_1,2023-04-15,3d
 Entrega PG01:first_2,2023-04-18,1d
 
 section PG01
-Diagrama de Gantt:active, first_1, 2023-04-15, 12h
-Delimitar tema: active, first_2, after first_1, 12h
+Diagrama de Gantt:first_1, 2023-04-15, 12h
+Delimitar tema:first_2, after first_1, 12h
 Variables de analisis: first_3, after first_2, 6h
 Limpieza de la base de datos: first_4, after first_2, 12h
 Analizar la factibilidad: first:5, after first_3, 6h
@@ -77,6 +80,8 @@ section nothing
 
 3.  Encontrar una relación, si es que la hay, entre el lenguaje de programación que usan los desarrolladores con el salario que ganan. En caso contrario buscar un factor externo que lo explique.
 
+------------------------------------------------------------------------
+
 ## Datos
 
 ### Procesos de recolección de datos:
@@ -88,16 +93,11 @@ Nuestros datos se basarán en dos bases de datos:
 -   Survey_results (StackOverflow):
     -   Contiene información de una encuesta realizada a desarrolladores de todo el mundo relacionados a la experiencia de programación. Incluyen demografía, educación, puesto de trabajo, lenguaje de programación, satisfacción laboral, entre otros.
 
-```{r warning=FALSE,eval=FALSE}
+```{r warning=FALSE}
 library(readr)
 
 #languages = read_csv("https://pldb.com/pldb.csv")
-encuesta = read_csv("survey_results_public.csv");
-
-datos = encuesta[encuesta$MainBranch != "None of these" & complete.cases(encuesta$ConvertedCompYearly),]
-
-
-
+encuesta = read_csv("survey_results_public.csv")
 ```
 
 ### Variables de estudio iniciales
@@ -107,7 +107,7 @@ En resumen, en esta sección se registran todas las variables utilizadas a parti
 #### Encuestas de Stakoverflow
 
 | Nombre de la variable | Tipo de variable   | Descripción                                                        |
-|----------------|----------------|-----------------------------------------|
+|-----------------|-----------------|--------------------------------------|
 | MainBranch            | Categórica Ordinal | Contiene información sobre el estado profesional del desarrollador |
 | Employment            | Categórica Nominal | El tipo de empleo que tiene le desarrollador                       |
 | RemoteWork            | Categórica Nominal | De que forma ejercen el trabajo remoto                             |
@@ -129,7 +129,7 @@ En resumen, en esta sección se registran todas las variables utilizadas a parti
 #### PLDB Lenguajes de Programación
 
 | Nombre de la variable | Tipo de variable   | Descripción                                                       |
-|----------------|----------------|----------------------------------------|
+|-----------------|-----------------|--------------------------------------|
 | Title                 | Categórica Nominal | Nombre original del lenguaje de programación                      |
 | Appeared              | Numérica discreta  | Año en donde apareció por primera vez el lenguaje de programación |
 | Rank                  | Numérica discreta  | Un ranking hecho por PLDB                                         |
@@ -137,3 +137,41 @@ En resumen, en esta sección se registran todas las variables utilizadas a parti
 | numberOfJobs          | Numérica discreta  | Número de trabajos relacionados al lenguaje de programación       |
 | numberOfUsers         | Numérica discreta  | Número de usuarios que usan el lenguaje                           |
 | Country               | Categórica Nominal | País de creación del lenguaje                                     |
+
+### Filtered Databases
+
+-   Encuestas de Stack Overflow (33880 registros obtenidos de 73268)
+
+    ```{r warning=FALSE, echo=FALSE}
+    library(readr)
+    library(dplyr)
+    library(tableHTML)
+    datos = encuesta[encuesta$MainBranch != "None of these" & 
+                       complete.cases(encuesta$MainBranch) &
+                       complete.cases(encuesta$Employment) &
+                       complete.cases(encuesta$RemoteWork) &
+                       complete.cases(encuesta$CodingActivities) &
+                       complete.cases(encuesta$DevType) &
+                       complete.cases(encuesta$Country) &
+                       complete.cases(encuesta$EdLevel) &
+                       complete.cases(encuesta$Currency) &
+                       complete.cases(encuesta$ConvertedCompYearly) &
+                       complete.cases(encuesta$MentalHealth) &
+                       complete.cases(encuesta$Ethnicity) &
+                       complete.cases(encuesta$Sexuality) &
+                       complete.cases(encuesta$Gender) &
+                       complete.cases(encuesta$Age) &
+                       complete.cases(encuesta$`OpSysPersonal use`) & 
+                       complete.cases(encuesta$`OpSysProfessional use`) &
+                       complete.cases(encuesta$LanguageHaveWorkedWith),]
+
+    datos = select(datos, MainBranch, Employment, RemoteWork, CodingActivities, DevType, Country, EdLevel, Currency, ConvertedCompYearly, MentalHealth, Ethnicity, Sexuality, Gender, Age, `OpSysPersonal use`, `OpSysProfessional use`, LanguageHaveWorkedWith)
+
+
+    frec <- table(datos$Gender)
+    frec <- sort(frec, decreasing = FALSE)
+    frec = as.data.frame(frec)
+    print(frec)
+    ```
+
+-   PLDB Lenguajes de programación
