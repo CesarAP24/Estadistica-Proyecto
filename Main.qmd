@@ -60,6 +60,7 @@ Variables de analisis: first_3, after first_2, 6h
 Limpieza de la base de datos: first_4, after first_2, 12h
 Analizar la factibilidad: first:5, after first_3, 6h
 
+
 section nothing
 ")
 
@@ -106,37 +107,36 @@ En resumen, en esta sección se registran todas las variables utilizadas a parti
 
 #### Encuestas de Stakoverflow
 
-| Nombre de la variable | Tipo de variable   | Descripción                                                        |
-|-----------------|-----------------|--------------------------------------|
-| MainBranch            | Categórica Ordinal | Contiene información sobre el estado profesional del desarrollador |
-| Employment            | Categórica Nominal | El tipo de empleo que tiene le desarrollador                       |
-| RemoteWork            | Categórica Nominal | De que forma ejercen el trabajo remoto                             |
-| CodingActivities      | Categórica Nominal | El modo en que ven a programación                                  |
-| DevType               | Categórica Nominal | Tipo de desarrollador, lista separada por comas                    |
-| Country               | Categórica Nominal | País del desarollador                                              |
-| EdLevel               | Categórica Nominal | Info sobre el nivel de educación                                   |
-| Currency              | Categórica Nominal | El tipo de moneda que usan                                         |
-| ConvertedCompYearly   | Numérica Continua  | Cuanto ganan anualmente                                            |
-| Mental Health         | Categórica Nominal | Como considera que está su salud mental                            |
-| Ethnicity             | Categórica Nominal | Raza del desarrollador                                             |
-| Sexuality             | Categórica Nominal | Sexo del desarrollador                                             |
-| Gender                | Categórica Nominal | Género                                                             |
-| Age                   | Numérica Continua  | Edad                                                               |
-| OpSysProfessional use | Categórica Nominal | Sistema operativo que usan para trabajar profesionalmente          |
-| OpSysPersonal use     | Categórica Nominal | Sistema operativo que usan para ellos mismos                       |
-| LanguagesHaveWorkWith | Categótica Nominal | Lista de los lenguajes que han usado                               |
+| Nombre de la variable | Tipo de variable   | Descripción                                                        | Restricciones |
+|------------------|-----------------|------------------|--------------------|
+| MainBranch            | Categórica Ordinal | Contiene información sobre el estado profesional del desarrollador |               |
+| Employment            | Categórica Nominal | El tipo de empleo que tiene le desarrollador                       |               |
+| RemoteWork            | Categórica Nominal | De que forma ejercen el trabajo remoto                             |               |
+| CodingActivities      | Categórica Nominal | El modo en que ven a programación                                  |               |
+| DevType               | Categórica Nominal | Tipo de desarrollador, lista separada por comas                    |               |
+| Country               | Categórica Nominal | País del desarollador                                              |               |
+| EdLevel               | Categórica Nominal | Info sobre el nivel de educación                                   |               |
+| Currency              | Categórica Nominal | El tipo de moneda que usan                                         |               |
+| ConvertedCompYearly   | Numérica Continua  | Cuanto ganan anualmente                                            |               |
+| Mental Health         | Categórica Nominal | Como considera que está su salud mental                            |               |
+| Ethnicity             | Categórica Nominal | Raza del desarrollador                                             |               |
+| Gender                | Categórica Nominal | Género                                                             |               |
+| Age                   | Categórica Ordinal | Edad                                                               |               |
+| OpSysProfessional use | Categórica Nominal | Sistema operativo que usan para trabajar profesionalmente          |               |
+| OpSysPersonal use     | Categórica Nominal | Sistema operativo que usan para ellos mismos                       |               |
+| LanguagesHaveWorkWith | Categótica Nominal | Lista de los lenguajes que han usado                               |               |
 
 #### PLDB Lenguajes de Programación
 
-| Nombre de la variable | Tipo de variable   | Descripción                                                       |
-|-----------------|-----------------|--------------------------------------|
-| Title                 | Categórica Nominal | Nombre original del lenguaje de programación                      |
-| Appeared              | Numérica discreta  | Año en donde apareció por primera vez el lenguaje de programación |
-| Rank                  | Numérica discreta  | Un ranking hecho por PLDB                                         |
-| Type                  | Categórica Nominal | El tipo de lenguaje del que se trata                              |
-| numberOfJobs          | Numérica discreta  | Número de trabajos relacionados al lenguaje de programación       |
-| numberOfUsers         | Numérica discreta  | Número de usuarios que usan el lenguaje                           |
-| Country               | Categórica Nominal | País de creación del lenguaje                                     |
+| Nombre de la variable | Tipo de variable   | Descripción                                                       | Restricciones |
+|-----------------|-----------------|------------------|---------------------|
+| Title                 | Categórica Nominal | Nombre original del lenguaje de programación                      |               |
+| Appeared              | Numérica discreta  | Año en donde apareció por primera vez el lenguaje de programación |               |
+| Rank                  | Numérica discreta  | Un ranking hecho por PLDB                                         |               |
+| Type                  | Categórica Nominal | El tipo de lenguaje del que se trata                              |               |
+| numberOfJobs          | Numérica discreta  | Número de trabajos relacionados al lenguaje de programación       |               |
+| numberOfUsers         | Numérica discreta  | Número de usuarios que usan el lenguaje                           |               |
+| Country               | Categórica Nominal | País de creación del lenguaje                                     |               |
 
 ### Filtered Databases
 
@@ -145,33 +145,34 @@ En resumen, en esta sección se registran todas las variables utilizadas a parti
     ```{r warning=FALSE, echo=FALSE}
     library(readr)
     library(dplyr)
-    library(tableHTML)
-    datos = encuesta[encuesta$MainBranch != "None of these" & 
-                       complete.cases(encuesta$MainBranch) &
-                       complete.cases(encuesta$Employment) &
-                       complete.cases(encuesta$RemoteWork) &
-                       complete.cases(encuesta$CodingActivities) &
-                       complete.cases(encuesta$DevType) &
-                       complete.cases(encuesta$Country) &
-                       complete.cases(encuesta$EdLevel) &
-                       complete.cases(encuesta$Currency) &
-                       complete.cases(encuesta$ConvertedCompYearly) &
-                       complete.cases(encuesta$MentalHealth) &
-                       complete.cases(encuesta$Ethnicity) &
-                       complete.cases(encuesta$Sexuality) &
-                       complete.cases(encuesta$Gender) &
-                       complete.cases(encuesta$Age) &
-                       complete.cases(encuesta$`OpSysPersonal use`) & 
-                       complete.cases(encuesta$`OpSysProfessional use`) &
-                       complete.cases(encuesta$LanguageHaveWorkedWith),]
 
-    datos = select(datos, MainBranch, Employment, RemoteWork, CodingActivities, DevType, Country, EdLevel, Currency, ConvertedCompYearly, MentalHealth, Ethnicity, Sexuality, Gender, Age, `OpSysPersonal use`, `OpSysProfessional use`, LanguageHaveWorkedWith)
+    #Filtrar datos
 
 
-    frec <- table(datos$Gender)
-    frec <- sort(frec, decreasing = FALSE)
-    frec = as.data.frame(frec)
-    print(frec)
+    #borrar las filas que no queremos
+    datos = select(encuesta, MainBranch, Employment, RemoteWork, CodingActivities, DevType, Country, EdLevel, Currency, ConvertedCompYearly, MentalHealth, Ethnicity, Gender, Age, `OpSysPersonal use`, `OpSysProfessional use`, LanguageHaveWorkedWith)
+
+    datos = na.omit(datos)
+
+    table(datos$Gender)
+    ```
+
+    ```{r}
+    library(ggplot2)
+    countries = datos %>% select(Country) %>% group_by(Country) %>% summarize(Quantity = n()) %>% arrange(Quantity) %>% filter(Quantity >= 500)
+
+    ggplot(countries, aes(x = reorder(Country, Quantity), y = Quantity)) +
+      geom_col() + xlab("Country with 500 or more participants") + ylab("Count") + theme(axis.text.x = element_text(size = 10))
+    ```
+
+    ```{r}
+    library(ggplot2)
+    ages_salary = datos %>% select(Age, ConvertedCompYearly)
+
+    ggplot(ages_salary, aes(x = Age, y = ConvertedCompYearly))
+
+
+
     ```
 
 -   PLDB Lenguajes de programación
